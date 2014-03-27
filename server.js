@@ -36,13 +36,16 @@ mongoose.connect(mongoUri);
 
 // User schema
 var userSchema = new mongoose.Schema({
-  email: {type: [String], index: true},
+  // email: String,
+  email: {type: String, index: true},
   first: String,
   last: String,
   drupal_uid: Number,
   subscribed: Number
 });
 userSchema.set('autoIndex', false);
+
+var userModel = mongoose.model('mailchimp-user', userSchema);
 
 
 /**
@@ -54,5 +57,45 @@ app.get('/user', function(request, response) {
 });
 
 app.post('/user', function(request, response) {
-  response.send('POST /user OK');
+  var email = request.body.email;
+  var subscribed = request.body.subscribed;
+
+  // Find a document for the user with the provided email.
+  userModel.findOne(
+    { 'email': email },
+    function(err, doc) {
+      if (err) {
+        response.send(500, err);
+        return console.log(err);
+      }
+
+      // If found, update the document with the subscription setting
+      if (doc) {
+        var updatedDoc = {
+          email: doc.email,
+          first: doc.first,
+          last: doc.last,
+          drupal_uid: doc.drupal_uid,
+          subscribed: subscribed
+        };
+
+        // Execute the update
+        userModel.update(
+          { 'email': email },
+          updatedDoc,
+          function(err, num, raw) {
+            if (err) {
+              response.send(500, err);
+              return console.log(err);
+            }
+
+            console.log('raw response'); console.log(raw);
+
+            // When successful, send response. Defaults to 200.
+            response.send();
+          }
+        );
+      }
+    }
+  );
 });
