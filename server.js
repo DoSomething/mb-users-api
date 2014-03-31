@@ -36,7 +36,6 @@ mongoose.connect(mongoUri);
 
 // User schema
 var userSchema = new mongoose.Schema({
-  // email: String,
   email: {type: String, index: true},
   first: String,
   last: String,
@@ -92,9 +91,14 @@ app.post('/user', function(request, response) {
             console.log('raw response'); console.log(raw);
 
             // When successful, send response. Defaults to 200.
-            response.send();
+            response.send(true);
           }
         );
+      }
+      else {
+        // Still a successful response even if no doc is found.
+        console.log('No doc found for email: ' + email);
+        response.send(204, true);
       }
     }
   );
