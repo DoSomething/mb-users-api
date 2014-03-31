@@ -37,10 +37,14 @@ mongoose.connect(mongoUri);
 // User schema
 var userSchema = new mongoose.Schema({
   email: {type: String, index: true},
-  first: String,
-  last: String,
   drupal_uid: Number,
-  subscribed: Number
+  mailchimp_status: Number,
+  subscribed: Number,
+  campaigns:[{
+    nid: Number,
+    signup: Date,
+    reportback: Date
+  }]
 });
 userSchema.set('autoIndex', false);
 
@@ -59,47 +63,21 @@ app.post('/user', function(request, response) {
   var email = request.body.email;
   var subscribed = request.body.subscribed;
 
-  // Find a document for the user with the provided email.
-  userModel.findOne(
+  // Update or upsert a document with the given subscription setting
+  userModel.update(
     { 'email': email },
-    function(err, doc) {
+    { subscribed: subscribed },
+    { upsert: true },
+    function(err, num, raw) {
       if (err) {
         response.send(500, err);
         return console.log(err);
       }
 
-      // If found, update the document with the subscription setting
-      if (doc) {
-        var updatedDoc = {
-          email: doc.email,
-          first: doc.first,
-          last: doc.last,
-          drupal_uid: doc.drupal_uid,
-          subscribed: subscribed
-        };
+      console.log('Update/upsert executed on: %s. Raw response from mongo:', email); console.log(raw);
 
-        // Execute the update
-        userModel.update(
-          { 'email': email },
-          updatedDoc,
-          function(err, num, raw) {
-            if (err) {
-              response.send(500, err);
-              return console.log(err);
-            }
-
-            console.log('raw response'); console.log(raw);
-
-            // When successful, send response. Defaults to 200.
-            response.send(true);
-          }
-        );
-      }
-      else {
-        // Still a successful response even if no doc is found.
-        console.log('No doc found for email: ' + email);
-        response.send(204, true);
-      }
+      // When successful, send response. Defaults to 200.
+      response.send(true);
     }
   );
 });
