@@ -1,0 +1,178 @@
+var express = require('express')
+    , mongoose = require('mongoose')
+    ;
+
+/**
+ * Express Setup
+ */
+var app = express();
+
+app.configure(function() {
+  // Parses request body and populates request.body
+  app.use(express.bodyParser());
+
+  // Checks request.body for HTTP method override
+  app.use(express.methodOverride());
+
+  // Perform route lookup based on url and HTTP method
+  app.use(app.router);
+
+  // Show all errors in development
+  app.use(express.errorHandler({dumpException: true, showStack: true}));
+});
+
+// Start server
+var port = process.env.MB_USER_API_PORT || 4722;
+app.listen(port, function() {
+  console.log('Message Broker User API server listening on port %d in %s mode...\n\n', port, app.settings.env);
+});
+
+
+/**
+ * Mongo setup and config.
+ */
+var mongoUri = 'mongodb://localhost/mb-users';
+mongoose.connect(mongoUri);
+
+// User schema
+var userSchema = new mongoose.Schema({
+  email: {type: String, index: true},
+  drupal_uid: Number,
+  mailchimp_status: Number,
+  subscribed: Number,
+  campaigns:[{
+    nid: Number,
+    signup: Date,
+    reportback: Date
+  }]
+});
+userSchema.set('autoIndex', false);
+
+var userModel = mongoose.model('mailchimp-user', userSchema);
+
+
+/**
+ * Routes
+ */
+
+/**
+ * GET from /user
+ */
+app.get('/user', function(request, response) {
+  response.send('GET /user OK');
+});
+
+
+/**
+ * POST to /user
+ */
+app.post('/user', function(request, response) {
+  // Only update the fields that are provided by the request.
+  var updateArgs = {};
+  if (request.body.subscribed !== undefined) {
+    updateArgs.subscribed = request.body.subscribed;
+  }
+
+  if (request.body.drupal_uid !== undefined) {
+    updateArgs.drupal_uid = request.body.drupal_uid;
+  }
+
+  if (request.body.mailchimp_status !== undefined) {
+    updateArgs.mailchimp_status = request.body.mailchimp_status;
+  }
+
+  // If there are no campaigns updates, then we can just execute the update.
+  if (request.body.campaigns === undefined) {
+
+    // Update the user document.
+    updateUser(request.body.email, updateArgs, response);
+
+  }
+  // But if there are campaigns to update, we need to handle on our own how
+  // that field gets updated in the document.
+  else {
+
+    // Find out if there's a document that already exists for this user.
+    userModel.findOne(
+      { 'email': request.body.email },
+      function(err, doc) {
+        if (err) {
+          response.send(500, err);
+          console.log(err);
+        }
+
+        if (doc && doc.campaigns !== undefined) {
+          // Add old data to ensure it doesn't get lost.
+          updateArgs.campaigns = doc.campaigns;
+
+          // Update old data with any matching data from the request.
+          for(var i = 0; i < request.body.campaigns.length; i++) {
+
+            var reqCampaign = request.body.campaigns[i];
+            var matchFound = false;
+
+            for (var j = 0; j < updateArgs.campaigns.length; j++) {
+
+              if (parseInt(reqCampaign.nid) === updateArgs.campaigns[j].nid) {
+                // Update only the fields provided by the request.
+                if (reqCampaign.signup !== undefined) {
+                  updateArgs.campaigns[j].signup = reqCampaign.signup;
+                }
+
+                if (reqCampaign.reportback !== undefined) {
+                  updateArgs.campaigns[j].reportback = reqCampaign.reportback;
+                }
+
+                matchFound = true;
+                break;
+              }
+
+            }
+
+            // No matching nid. Add to end of the updateArgs.campaigns array.
+            if (!matchFound) {
+              updateArgs.campaigns[updateArgs.campaigns.length] = reqCampaign;
+            }
+          }
+        }
+        else {
+          // If no old data to worry about, just update with the request's campaign data.
+          updateArgs.campaigns = request.body.campaigns;
+        }
+
+        // Update the user document.
+        updateUser(request.body.email, updateArgs, response);
+      }
+    );
+
+  }
+});
+
+/**
+ * Updates a user document if it already exists, or upserts one if it doesn't.
+ *
+ * @param email
+ *  Email address of the user document to update/upsert.
+ * @param args
+ *  Values to update the document with.
+ * @param response
+ *  Response object to handle responses back to the sender.
+ */
+var updateUser = function(email, args, response) {
+  userModel.update(
+    { 'email': email },
+    args,
+    { upsert: true },
+    function(err, num, raw) {
+      if (err) {
+        response.send(500, err);
+        console.log(err);
+      }
+
+      console.log('Update/upsert executed on: %s. Raw response from mongo:', email);
+      console.log(raw);
+
+      response.send(true);
+    }
+  );
+}
