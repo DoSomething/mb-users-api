@@ -59,7 +59,33 @@ var userModel = mongoose.model('mailchimp-user', userSchema);
  * GET from /user
  */
 app.get('/user', function(request, response) {
-  response.send('GET /user OK');
+
+  if (request.query.email === undefined) {
+    response.send(400, 'No email specified.');
+    console.log('GET /user request. No email specified.');
+  }
+  else {
+    userModel.findOne(
+      { 'email': request.query.email },
+      function(err, doc) {
+        if (err) {
+          response.send(500, err);
+          console.log(err);
+        }
+
+        // Respond with the user doc if found.
+        if (doc) {
+          response.send(200, doc);
+          console.log('GET /user request. Responding with user doc for: ' + doc.email);
+        }
+        else {
+          // Return an empty object if no doc is found.
+          response.send(204, {});
+          console.log('GET /user request. No doc found for: ' + request.query.email);
+        }
+      }
+    );
+  }
 });
 
 
