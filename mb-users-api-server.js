@@ -24,7 +24,7 @@ app.configure(function() {
 // Start server
 var port = process.env.MB_USER_API_PORT || 4722;
 app.listen(port, function() {
-  console.log('Message Broker User API server listening on port %d in %s mode...\n\n', port, app.settings.env);
+  console.log('Message Broker User API server listening on port %d in %s mode.', port, app.settings.env);
 });
 
 
@@ -33,22 +33,32 @@ app.listen(port, function() {
  */
 var mongoUri = 'mongodb://localhost/mb-users';
 mongoose.connect(mongoUri);
-
-// User schema
-var userSchema = new mongoose.Schema({
-  email: {type: String, index: true},
-  drupal_uid: Number,
-  mailchimp_status: Number,
-  subscribed: Number,
-  campaigns:[{
-    nid: Number,
-    signup: Date,
-    reportback: Date
-  }]
+mongoose.connection.on('error', function(err) {
+  console.log('Unable to connect to the Mongo database (%s). Check to make sure the database is running.', mongoUri);
+  process.exit();
 });
-userSchema.set('autoIndex', false);
 
-var userModel = mongoose.model('mailchimp-user', userSchema);
+var userModel;
+mongoose.connection.once('open', function() {
+  // User schema
+  var userSchema = new mongoose.Schema({
+    email: {type: String, index: true},
+    drupal_uid: Number,
+    mailchimp_status: Number,
+    subscribed: Number,
+    campaigns:[{
+      nid: Number,
+      signup: Date,
+      reportback: Date
+    }]
+  });
+  userSchema.set('autoIndex', false);
+
+  // User model
+  userModel = mongoose.model('mailchimp-user', userSchema);
+
+  console.log("Connection to Mongo (%s) succeeded! Ready to go...\n\n", mongoUri);
+});
 
 
 /**
