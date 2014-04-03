@@ -8,8 +8,9 @@ var express = require('express')
 var app = express();
 
 app.configure(function() {
-  // Parses request body and populates request.body
-  app.use(express.bodyParser());
+  // Replaces express.bodyParser() - parses request body and populates request.body
+  app.use(express.urlencoded());
+  app.use(express.json());
 
   // Checks request.body for HTTP method override
   app.use(express.methodOverride());
