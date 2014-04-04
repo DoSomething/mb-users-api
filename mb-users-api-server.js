@@ -104,42 +104,45 @@ app.get('/user', function(request, response) {
  * POST to /user
  */
 app.post('/user', function(request, response) {
-  // Only update the fields that are provided by the request.
-  var updateArgs = {};
-  if (request.body.subscribed !== undefined) {
-    updateArgs.subscribed = request.body.subscribed;
-  }
 
-  if (request.body.drupal_uid !== undefined) {
-    updateArgs.drupal_uid = request.body.drupal_uid;
-  }
+  // Find out if there's a document that already exists for this user.
+  userModel.findOne(
+    { 'email': request.body.email },
+    function(err, doc) {
+      if (err) {
+        response.send(500, err);
+        console.log(err);
+      }
 
-  if (request.body.mailchimp_status !== undefined) {
-    updateArgs.mailchimp_status = request.body.mailchimp_status;
-  }
+      // Only update the fields that are provided by the request.
+      var updateArgs = {};
 
-  // If there are no campaigns updates, then we can just execute the update.
-  if (request.body.campaigns === undefined) {
+      if (request.body.subscribed !== undefined) {
+        updateArgs.subscribed = request.body.subscribed;
+      }
+      else if (doc.subscribed !== undefined) {
+        updateArgs.subscribed = doc.subscribed;
+      }
 
-    // Update the user document.
-    updateUser(request.body.email, updateArgs, response);
+      if (request.body.drupal_uid !== undefined) {
+        updateArgs.drupal_uid = request.body.drupal_uid;
+      }
+      else if (doc.drupal_uid !== undefined) {
+        updateArgs.drupal_uid = doc.drupal_uid;
+      }
 
-  }
-  // But if there are campaigns to update, we need to handle on our own how
-  // that field gets updated in the document.
-  else {
+      if (request.body.mailchimp_status !== undefined) {
+        updateArgs.mailchimp_status = request.body.mailchimp_status;
+      }
+      else if (doc.mailchimp_status !== undefined) {
+        updateArgs.mailchimp_status = doc.mailchimp_status;
+      }
 
-    // Find out if there's a document that already exists for this user.
-    userModel.findOne(
-      { 'email': request.body.email },
-      function(err, doc) {
-        if (err) {
-          response.send(500, err);
-          console.log(err);
-        }
-
+      // If there are campaigns to update, we need to handle on our own how
+      // that field gets updated in the document.
+      if (request.body.campaigns !== undefined) {
         if (doc && doc.campaigns !== undefined) {
-          // Add old data to ensure it doesn't get lost.
+          // Add old campaigns data to ensure it doesn't get lost.
           updateArgs.campaigns = doc.campaigns;
 
           // Update old data with any matching data from the request.
@@ -176,13 +179,12 @@ app.post('/user', function(request, response) {
           // If no old data to worry about, just update with the request's campaign data.
           updateArgs.campaigns = request.body.campaigns;
         }
-
-        // Update the user document.
-        updateUser(request.body.email, updateArgs, response);
       }
-    );
 
-  }
+      // Update the user document.
+      updateUser(request.body.email, updateArgs, response);
+    }
+  );
 });
 
 /**
