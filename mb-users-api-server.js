@@ -120,21 +120,21 @@ app.post('/user', function(request, response) {
       if (request.body.subscribed !== undefined) {
         updateArgs.subscribed = request.body.subscribed;
       }
-      else if (doc.subscribed !== undefined) {
+      else if (doc && doc.subscribed !== undefined) {
         updateArgs.subscribed = doc.subscribed;
       }
 
       if (request.body.drupal_uid !== undefined) {
         updateArgs.drupal_uid = request.body.drupal_uid;
       }
-      else if (doc.drupal_uid !== undefined) {
+      else if (doc && doc.drupal_uid !== undefined) {
         updateArgs.drupal_uid = doc.drupal_uid;
       }
 
       if (request.body.mailchimp_status !== undefined) {
         updateArgs.mailchimp_status = request.body.mailchimp_status;
       }
-      else if (doc.mailchimp_status !== undefined) {
+      else if (doc && doc.mailchimp_status !== undefined) {
         updateArgs.mailchimp_status = doc.mailchimp_status;
       }
 
