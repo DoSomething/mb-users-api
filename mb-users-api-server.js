@@ -41,10 +41,21 @@ mongoose.connection.on('error', function(err) {
 });
 
 var userModel;
+var userCollectionName = 'mailchimp-user';
 mongoose.connection.once('open', function() {
   // User schema
   var userSchema = new mongoose.Schema({
     email: {type: String, index: true},
+    anniversary: {
+      day: Number,
+      month: Number,
+      year: Number
+    },
+    birthdate: {
+      day: Number,
+      month: Number,
+      year: Number
+    },
     drupal_uid: Number,
     mailchimp_status: Number,
     subscribed: Number,
@@ -57,7 +68,7 @@ mongoose.connection.once('open', function() {
   userSchema.set('autoIndex', false);
 
   // User model
-  userModel = mongoose.model('mailchimp-user', userSchema);
+  userModel = mongoose.model(userCollectionName, userSchema);
 
   console.log("Connection to Mongo (%s) succeeded! Ready to go...\n\n", mongoUri);
 });
