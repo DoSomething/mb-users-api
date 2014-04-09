@@ -1,6 +1,7 @@
 var express = require('express')
     , mongoose = require('mongoose')
     , User = require('./lib/user')
+    , Users = require('./lib/users')
     ;
 
 /**
@@ -48,14 +49,14 @@ mongoose.connection.once('open', function() {
     email: {type: String, index: true},
     anniversary: {
       day: Number,
-      month: Number,
-      year: Number
+      month: Number
     },
+    anniversary_year: Number,
     birthdate: {
       day: Number,
-      month: Number,
-      year: Number
+      month: Number
     },
+    birthdate_year: Number,
     drupal_uid: Number,
     mailchimp_status: Number,
     subscribed: Number,
@@ -90,6 +91,14 @@ app.get('/user', function(req, res) {
     var user = new User(req.query.email, userModel);
     user.get(req, res);
   }
+});
+
+/**
+ * GET from /users
+ */
+app.get('/users', function(req, res) {
+  var users = new Users(userModel);
+  users.get(req, res);
 });
 
 /**
