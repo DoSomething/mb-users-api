@@ -70,18 +70,6 @@ mongoose.connection.once('open', function() {
 /**
  * GET from /user
  */
-
-app.get('/user/email/:email', function(req, res) {
-  if (req.params.email === undefined) {
-    res.send(400, 'No email specified.');
-    console.log('GET /user/email/:email request. No email specified.');
-  }
-  else {
-    var user = new User(req.params.email, userModel);
-    user.get(req, res);
-  }
-});
-
 app.get('/user', function(req, res) {
   if (req.query.email === undefined) {
     res.send(400, 'No email specified.');
@@ -93,22 +81,9 @@ app.get('/user', function(req, res) {
   }
 });
 
-
 /**
  * POST to /user
  */
-
-app.post('/user/email/:email', function(req, res) {
-  if (req.params.email === undefined) {
-    res.send(400, 'No email specified.');
-    console.log('POST /user/email/:email request. No email specified.');
-  }
-  else {
-    var user = new User(req.params.email, userModel);
-    user.post(req, res);
-  }
-});
-
 app.post('/user', function(req, res) {
   if (req.body.email === undefined) {
     res.send(400, 'No email specified.');
