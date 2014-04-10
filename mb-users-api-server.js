@@ -47,11 +47,11 @@ mongoose.connection.once('open', function() {
   // User schema
   var userSchema = new mongoose.Schema({
     email: {type: String, index: true},
-    anniversary: {
+    drupal_register_date: {
       day: Number,
       month: Number
     },
-    anniversary_year: Number,
+    drupal_register_year: Number,
     birthdate: {
       day: Number,
       month: Number
