@@ -84,12 +84,12 @@ mongoose.connection.once('open', function() {
  * GET from /user
  */
 app.get('/user', function(req, res) {
-  if (req.query.email === undefined) {
-    res.send(400, 'No email specified.');
-    console.log('GET /user request. No email specified.');
+  if (req.query.email === undefined && req.query.drupal_uid === undefined) {
+    res.send(400, 'No email or drupal_uid specified.');
+    console.log('GET /user request. No email or drupal_uid specified.');
   }
   else {
-    var user = new User(req.query.email, userModel);
+    var user = new User(userModel);
     user.get(req, res);
   }
 });
@@ -111,7 +111,7 @@ app.post('/user', function(req, res) {
     console.log('POST /user request. No email specified.');
   }
   else {
-    var user = new User(req.body.email, userModel);
+    var user = new User(userModel);
     user.post(req, res);
   }
 });
