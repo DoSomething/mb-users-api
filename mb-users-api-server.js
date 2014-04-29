@@ -115,3 +115,17 @@ app.post('/user', function(req, res) {
     user.post(req, res);
   }
 });
+
+/**
+ * DELETE /user
+ */
+app.delete('/user', function(req, res) {
+  if (req.query.email === undefined) {
+    res.send(400, 'No email specified.');
+    console.log('DELETE /user request. No email specified.');
+  }
+  else {
+    var user = new User(userModel);
+    user.delete(req, res);
+  }
+});
