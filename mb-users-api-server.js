@@ -58,6 +58,8 @@ mongoose.connection.once('open', function() {
     },
     birthdate_year: Number,
     drupal_uid: Number,
+    first_name: String,
+    last_name: String,
     mailchimp_status: Number,
     mobile: String,
     subscribed: Number,
