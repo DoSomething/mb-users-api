@@ -19,6 +19,9 @@ The API lives on the apps server in our Rackspace private cloud. We use the fore
 - `$ forever -l /home/dosomething/forever-logs/mb-users-api-server_<date>.log start mb-users-api-server.js`
 - Verify that the process is running:  
   `$ forever list`
+- If an instance of mb-users-api-server is already running, you can stop it by checking  the index of the process from `forever list` and then running:  
+  `$ forever stop <index #>`  
+  ex: `$ forever stop 0`
 
 ## Usage
 #### Get a User Document
@@ -35,15 +38,15 @@ Parameters _(optional)_:
 - `drupal_uid`: Number  
 - `mailchimp_status`: Number  
 - `campaigns`: Object array  
-  ```
-  [  
-    {  
-      nid (Number),  
-      signup (Date),  
-      reportback (Date)  
-    }, ...  
-  ]
-  ```  
+```
+[  
+  {  
+    nid (Number),  
+    signup (Date),  
+    reportback (Date)  
+  }, ...  
+]
+```  
 Response: `true` if successful. Otherwise, something else.
 
 #### Get Users Born on a Certain Day
