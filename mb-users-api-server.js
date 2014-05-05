@@ -44,19 +44,12 @@ mongoose.connection.on('error', function(err) {
 var userModel;
 var userCollectionName = 'mailchimp-user';
 mongoose.connection.once('open', function() {
+
   // User schema
   var userSchema = new mongoose.Schema({
     email: {type: String, index: true},
-    drupal_register_date: {
-      day: Number,
-      month: Number
-    },
-    drupal_register_year: Number,
-    birthdate: {
-      day: Number,
-      month: Number
-    },
-    birthdate_year: Number,
+    birthdate: Date,
+    drupal_register_date: Date,
     drupal_uid: Number,
     first_name: String,
     last_name: String,
