@@ -49,16 +49,30 @@ Parameters _(optional)_:
 ```  
 Response: `true` if successful. Otherwise, something else.
 
-#### Get Users Born on a Certain Day
+#### Get Users Born on a Certain Day from Any Year
 URL: `/users`  
 Protocol: `HTTP GET`  
 Parameters: `birthdate` in the form of `m-d`  
 Example query: `\users?birthdate=12-25`  
 Response: JSON array of user documents. Or an empty array if none are found.
 
-#### Get Users Registered on a Certain Day
+#### Get Users Born on a Certain Day and Year
+URL: `/users`  
+Protocol: `HTTP GET`  
+Parameters: `birthdate` in the form of `m-d-Y`  
+Example query: `\users?birthdate=12-25-2000`  
+Response: JSON array of user documents. Or an empty array if none are found.
+
+#### Get Users Registered on a Certain Day from Any Year
 URL: `/users`  
 Protocol: `HTTP GET`  
 Parameters: `drupal_register_date` in the form of `m-d`  
 Example query: `\users?drupal_register_date=12-25`  
+Response: JSON array of user documents. Or an empty array if none are found.
+
+#### Get Users Registered on a Certain Day and Year
+URL: `/users`  
+Protocol: `HTTP GET`  
+Parameters: `drupal_register_date` in the form of `m-d-Y`  
+Example query: `\users?drupal_register_date=12-25-2013`  
 Response: JSON array of user documents. Or an empty array if none are found.
