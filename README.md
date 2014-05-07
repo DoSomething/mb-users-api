@@ -11,16 +11,19 @@ This interface allows producer and consumer components of the Message Broker sys
 The Node API requires a Mongo database to save and retrieve user data. A couple main ways you could start Mongo:
 
 ##### Option 1
-- Create the /data/db folder:  
-`$ mkdir /data`  
-`$ mkdir /data/db`  
+- Create the /data/db folder:
+```
+$ mkdir /data
+$ mkdir /data/db
+```
   - You may need to use `sudo` for the `mkdir` commands.
 - Start mongo:  
-`$ mongod`
+```
+$ mongod
+```
 
 ##### Option 2
-- Start mongo with a specific database path:  
-`$ mongod --dbpath=<whatever path you want`
+- Start mongo with a specific database path: `$ mongod --dbpath=<whatever path you want`
   - Depending on the path and permissions, you may also need to `sudo` that command.
 
 #### Start the API
