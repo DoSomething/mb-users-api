@@ -2,7 +2,12 @@ var express = require('express')
     , mongoose = require('mongoose')
     , User = require('./lib/user')
     , Users = require('./lib/users')
+    , dslogger = require('./lib/dslogger')
     ;
+
+// Initialize the logging mechanism. Defines filename to write to and whether
+// or not to also log to the console.
+dslogger.init('mb-users-api-server', false);
 
 /**
  * Express Setup
@@ -81,7 +86,7 @@ mongoose.connection.once('open', function() {
 app.get('/user', function(req, res) {
   if (req.query.email === undefined && req.query.drupal_uid === undefined) {
     res.send(400, 'No email or drupal_uid specified.');
-    console.log('GET /user request. No email or drupal_uid specified.');
+    dslogger.error('GET /user request. No email or drupal_uid specified.');
   }
   else {
     var user = new User(userModel);
@@ -103,7 +108,7 @@ app.get('/users', function(req, res) {
 app.post('/user', function(req, res) {
   if (req.body.email === undefined) {
     res.send(400, 'No email specified.');
-    console.log('POST /user request. No email specified.');
+    dslogger.error('POST /user request. No email specified.');
   }
   else {
     var user = new User(userModel);
@@ -117,7 +122,7 @@ app.post('/user', function(req, res) {
 app.delete('/user', function(req, res) {
   if (req.query.email === undefined) {
     res.send(400, 'No email specified.');
-    console.log('DELETE /user request. No email specified.');
+    dslogger.error('DELETE /user request. No email specified.');
   }
   else {
     var user = new User(userModel);
