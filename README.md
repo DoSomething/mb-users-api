@@ -7,6 +7,25 @@ This interface allows producer and consumer components of the Message Broker sys
 - Install node: [http://nodejs.org/download/]
 - Install mongo: [http://docs.mongodb.org/manual/installation/]
 
+#### Start Mongo
+The Node API requires a Mongo database to save and retrieve user data. A couple main ways you could start Mongo:
+
+##### Option 1
+- Create the /data/db folder:
+```
+$ mkdir /data
+$ mkdir /data/db
+```
+  - You may need to use `sudo` for the `mkdir` commands.
+- Start mongo:  
+```
+$ mongod
+```
+
+##### Option 2
+- Start mongo with a specific database path: `$ mongod --dbpath=<whatever path you want`
+  - Depending on the path and permissions, you may also need to `sudo` that command.
+
 #### Start the API
 - Install dependencies: `npm install`
 - If applicable, set the environment variable `MB_USER_API_PORT` to specify the port you want the server to run on.
