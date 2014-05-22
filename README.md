@@ -70,12 +70,32 @@ Parameters _(optional)_:
 ```  
 Response: `true` if successful. Otherwise, something else.
 
+#### Get Users
+URL: `/users`  
+Protocol: `HTTP GET`  
+Parameters _(optional)_:  
+- `page`: Number  # For pagination. Page number to skip to. _Default_: 1  
+- `pageSize`: Number  # For pagination. Requires `page` to be set. Sets the page size. _Default_: 100  
+- `limit`: Number  # Limits the number of results returned. _Default_: 100  
+- `includeUnsubscribed`: Number  # Set to 1 to include users who are unsubscribed.
+
+Example query: `\Users?page=10&pageSize=100&limit=50`
+Response: JSON array that includes query details and an array of user documents found.
+```
+{
+  page: (Number),
+  pageSize: (Number),
+  limit: (Number),
+  results: (Array of found user documents)
+}
+```
+
 #### Get Users Born on a Certain Day from Any Year
 URL: `/users`  
 Protocol: `HTTP GET`  
 Parameters: `birthdate` in the form of `m-d`  
 Parameters _(optional)_:  
-- `includeUnsubscribed`: Number  ## Set to 1 to include users who are unsubscribed.
+- `includeUnsubscribed`: Number  # Set to 1 to include users who are unsubscribed.
 
 Example query: `\users?birthdate=12-25`  
 Response: JSON array of user documents. Or an empty array if none are found.
@@ -85,7 +105,7 @@ URL: `/users`
 Protocol: `HTTP GET`  
 Parameters: `birthdate` in the form of `m-d-Y`  
 Parameters _(optional)_:  
-- `includeUnsubscribed`: Number  ## Set to 1 to include users who are unsubscribed.
+- `includeUnsubscribed`: Number  # Set to 1 to include users who are unsubscribed.
 
 Example query: `\users?birthdate=12-25-2000`  
 Response: JSON array of user documents. Or an empty array if none are found.
@@ -95,7 +115,7 @@ URL: `/users`
 Protocol: `HTTP GET`  
 Parameters: `drupal_register_date` in the form of `m-d`  
 Parameters _(optional)_:  
-- `includeUnsubscribed`: Number  ## Set to 1 to include users who are unsubscribed.
+- `includeUnsubscribed`: Number  # Set to 1 to include users who are unsubscribed.
 
 Example query: `\users?drupal_register_date=12-25`  
 Response: JSON array of user documents. Or an empty array if none are found.
@@ -105,7 +125,7 @@ URL: `/users`
 Protocol: `HTTP GET`  
 Parameters: `drupal_register_date` in the form of `m-d-Y`  
 Parameters _(optional)_:  
-- `includeUnsubscribed`: Number  ## Set to 1 to include users who are unsubscribed.
+- `includeUnsubscribed`: Number  # Set to 1 to include users who are unsubscribed.
 
 Example query: `\users?drupal_register_date=12-25-2013`  
 Response: JSON array of user documents. Or an empty array if none are found.
