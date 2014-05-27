@@ -78,6 +78,7 @@ Parameters _(optional)_:
 - `pageSize`: Number  # For pagination. Requires `page` to be set. Sets the page size. _Default_: 100  
 - `limit`: Number  # Limits the number of results returned. _Default_: 100  
 - `includeUnsubscribed`: Number  # Set to 1 to include users who are unsubscribed.
+- `excludeNoCampaigns`: Number  # Set to 1 to exclude users who have no campaign actions.
 
 Example query: `\Users?page=10&pageSize=100&limit=50`
 Response: JSON array that includes query details and an array of user documents found.
