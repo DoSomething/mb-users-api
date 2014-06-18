@@ -10,6 +10,27 @@ var express = require('express')
 dslogger.init('mb-users-api-server', false);
 
 /**
+ * Parse command line arguments.
+ *
+ * -port -p
+ *   Allows the caller to set the port that this app should run on.
+ */
+var listenForPort = false;
+var overridePort = false;
+var defaultPort = 4722;
+
+process.argv.forEach(function(val, idx, arr) {
+  if (listenForPort) {
+    listenForPort = false;
+    overridePort = parseInt(val);
+  }
+
+  if (val === '-port' || val === '-p') {
+    listenForPort = true;
+  }
+});
+
+/**
  * Express Setup
  */
 var app = express();
@@ -30,7 +51,7 @@ app.configure(function() {
 });
 
 // Start server
-var port = process.env.MB_USER_API_PORT || 4722;
+var port = overridePort || process.env.MB_USER_API_PORT || defaultPort;
 app.listen(port, function() {
   console.log('Message Broker User API server listening on port %d in %s mode.', port, app.settings.env);
 });
