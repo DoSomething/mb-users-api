@@ -79,6 +79,11 @@ mongoose.connection.once('open', function() {
     drupal_uid: Number,
     first_name: String,
     last_name: String,
+    address1: String,
+    address2: String,
+    city: String,
+    state: String,
+    zip: String,
     mailchimp_status: Number,
     mobile: String,
     subscribed: Number,
@@ -86,7 +91,19 @@ mongoose.connection.once('open', function() {
       nid: Number,
       signup: Date,
       reportback: Date
-    }]
+    }],
+    hs_gradyear: Number,
+    race: String,
+    religion: String,
+    hs_name: String,
+    college_name: String,
+    major_name: String,
+    degree_type: String,
+    sat_math: Number,
+    sat_verbal: Number,
+    sat_writing: Number,
+    act_math: Number,
+    gpa: Number
   });
   userSchema.set('autoIndex', false);
 
