@@ -103,7 +103,8 @@ mongoose.connection.once('open', function() {
     sat_verbal: Number,
     sat_writing: Number,
     act_math: Number,
-    gpa: Number
+    gpa: Number,
+    role: String
   });
   userSchema.set('autoIndex', false);
 
