@@ -87,11 +87,11 @@ mongoose.connection.once('open', function() {
     mailchimp_status: Number,
     mobile: String,
     subscribed: Number,
-    subscriptions:[{
+    subscriptions:{
       mailchimp: Boolean,
       digest: Boolean,
       user_events: Boolean,
-    }],
+    },
     campaigns:[{
       nid: Number,
       signup: Date,
