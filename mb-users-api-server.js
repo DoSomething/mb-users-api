@@ -91,6 +91,7 @@ mongoose.connection.once('open', function() {
       mailchimp: Boolean,
       digest: Boolean,
       user_events: Boolean,
+      banned: Boolean
     },
     campaigns:[{
       nid: Number,
