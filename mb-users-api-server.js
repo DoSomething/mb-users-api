@@ -90,7 +90,7 @@ mongoose.connection.once('open', function() {
     subscriptions:{
       mailchimp: Boolean,
       digest: Boolean,
-      user_events: Boolean,
+      user_events: Boolean
     },
     campaigns:[{
       nid: Number,
