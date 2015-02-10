@@ -130,7 +130,7 @@ mongoose.connection.once('open', function() {
  * GET from /user
  */
 app.get('/user', function(req, res) {
-  if (req.query.email === undefined && req.query.drupal_uid === undefined) {
+  if (!(email in req.query) && !(drupal_uid in req.query)) {
     res.send(400, 'No email or drupal_uid specified.');
     dslogger.error('GET /user request. No email or drupal_uid specified.');
   }
@@ -152,7 +152,7 @@ app.get('/users', function(req, res) {
  * POST to /user
  */
 app.post('/user', function(req, res) {
-  if (req.body.email === undefined) {
+  if (!(email in req.body.email)) {
     res.send(400, 'No email specified.');
     dslogger.error('POST /user request. No email specified.');
   }
@@ -166,7 +166,7 @@ app.post('/user', function(req, res) {
  * DELETE /user
  */
 app.delete('/user', function(req, res) {
-  if (req.query.email === undefined) {
+  if (!(email in req.query)) {
     res.send(400, 'No email specified.');
     dslogger.error('DELETE /user request. No email specified.');
   }
