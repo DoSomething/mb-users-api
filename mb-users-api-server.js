@@ -2,8 +2,7 @@ var express = require('express')
     , mongoose = require('mongoose')
     , User = require('./lib/user')
     , Users = require('./lib/users')
-    , dslogger = require('./lib/dslogger')
-    ;
+    , dslogger = require('./lib/dslogger');
 
 // Initialize the logging mechanism. Defines filename to write to and whether
 // or not to also log to the console.
@@ -152,7 +151,7 @@ app.get('/users', function(req, res) {
  * POST to /user
  */
 app.post('/user', function(req, res) {
-  if (!(email in req.body) || !req.body.email) {
+  if (!req.body.email) {
     res.send(400, 'No email specified.');
     dslogger.error('POST /user request. No email specified.');
   }
@@ -166,7 +165,7 @@ app.post('/user', function(req, res) {
  * DELETE /user
  */
 app.delete('/user', function(req, res) {
-  if (!(email in req.query) || !req.query.email) {
+  if (!req.query.email) {
     res.send(400, 'No email specified.');
     dslogger.error('DELETE /user request. No email specified.');
   }
