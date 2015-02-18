@@ -1,11 +1,38 @@
 {
-    "name": "messagebroker-user-api",
-    "version": "0.0.1",
-    "description": "User API for Message Broker use.",
-    "dependencies": {
-        "express": "3.x",
-        "path": "~0.4.9",
-        "mongoose": "~3.8.8",
-        "request": "2.34.x"
-    }
+  "name": "mb-users-api",
+  "version": "0.2.0",
+  "description": "User API for Message Broker use to interface with the related Mongo database.",
+  "dependencies": {
+    "express": "3.x",
+    "path": "~0.4.9",
+    "mongoose": "~3.8.8",
+    "request": "2.34.x"
+  },
+  "author": "Jonathan Uy <juy@dosomething.org>",
+  "contributors": [
+    {
+      "name": "Jonathan Uy",
+      "email": "juy@dosomething.org"
+    },
+    {
+      "name": "Darren 'Dee' Lee",
+      "email": "dlee@dosomething.org"
+    }],
+  "scripts": {
+    "start": "node mb-users-api-server.js"
+  },
+  "main": "mb-users-api-server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DoSomething/mb-users-api"
+  },
+  "bugs": {
+    "url": "https://github.com/DoSomething/mb-users-api/issues"
+  },
+  "keywords": [
+    "DoSomething.org",
+    "Message Broker",
+    "User API"
+  ],
+  "license": "MIT"
 }
