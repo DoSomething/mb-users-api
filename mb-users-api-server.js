@@ -76,7 +76,7 @@ mongoose.connection.once('open', function() {
     birthdate: Date,
     drupal_register_date: Date,
     drupal_uid: Number,
-    signup_application_id: String,
+    source: String,
     first_name: String,
     last_name: String,
     address1: String,
