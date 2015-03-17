@@ -129,6 +129,7 @@ mongoose.connection.once('open', function() {
  * GET from /user
  */
 app.get('/user', function(req, res) {
+
   if (!req.query.email && !req.query.drupal_uid) {
     res.send(400, 'No email or drupal_uid specified.');
     dslogger.error('GET /user request. No email or drupal_uid specified.');
