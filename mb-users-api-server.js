@@ -72,6 +72,7 @@ mongoose.connection.once('open', function() {
 
   // User schema
   var userSchema = new mongoose.Schema({
+    created: {type: Date, default: Date.now},
     email: {type: String, index: true},
     birthdate: Date,
     drupal_register_date: Date,
