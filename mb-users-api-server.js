@@ -152,6 +152,7 @@ app.get('/users', function(req, res) {
  * POST to /user
  */
 app.post('/user', function(req, res) {
+
   if (!req.body.email) {
     res.send(400, 'No email specified.');
     dslogger.error('POST /user request. No email specified.');
@@ -166,6 +167,7 @@ app.post('/user', function(req, res) {
  * DELETE /user
  */
 app.delete('/user', function(req, res) {
+
   if (!req.query.email) {
     res.send(400, 'No email specified.');
     dslogger.error('DELETE /user request. No email specified.');
