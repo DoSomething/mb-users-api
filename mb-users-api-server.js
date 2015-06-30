@@ -1,6 +1,7 @@
 var express = require('express')
     , mongoose = require('mongoose')
     , User = require('./lib/user')
+    , UserBanned = require('./lib/userBanned')
     , Users = require('./lib/users')
     , dslogger = require('./lib/dslogger');
 
@@ -94,7 +95,11 @@ mongoose.connection.once('open', function() {
       mailchimp: Boolean,
       digest: Boolean,
       user_events: Boolean,
-      banned: Boolean
+      banned: {
+        reason: String,
+        when: Date,
+        source: String
+      }
     },
     campaigns:[{
       nid: Number,
@@ -163,6 +168,21 @@ app.post('/user', function(req, res) {
   else {
     var user = new User(userModel);
     user.post(req, res);
+  }
+});
+
+/**
+ * POST to /user/banned
+ */
+app.post('/user/banned', function(req, res) {
+
+  if (!req.body.email) {
+    res.send(400, 'No email specified.');
+    dslogger.error('POST /user/banned request. No email specified.');
+  }
+  else {
+    var userBanned = new UserBanned(userModel);
+    userBanned.post(req, res);
   }
 });
 
