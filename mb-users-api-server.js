@@ -71,6 +71,8 @@ var userCollectionName = 'mailchimp-user';
 mongoose.connection.once('open', function() {
 
   // User schema
+  // @todo: name schema rather that allowing the default plurailized naming
+  // http://stackoverflow.com/questions/5794834/how-to-access-a-preexisting-collection-with-mongoose?answertab=votes#tab-top
   var userSchema = new mongoose.Schema({
     created: {type: Date, default: Date.now},
     email: {type: String, index: true},
@@ -118,7 +120,7 @@ mongoose.connection.once('open', function() {
   // User model
   userModel = mongoose.model(userCollectionName, userSchema);
 
-  console.log("Connection to Mongo (%s) succeeded! Ready to go...\n\n", mongoUri);
+  console.log("YO! - Connection to Mongo (%s) succeeded! Ready to go...\n\n", mongoUri);
 });
 
 
@@ -168,6 +170,8 @@ app.post('/user', function(req, res) {
  * DELETE /user
  */
 app.delete('/user', function(req, res) {
+
+  console.log('DELETE /user');
 
   if (!req.query.email) {
     res.send(400, 'No email specified.');
