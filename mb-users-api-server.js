@@ -60,7 +60,13 @@ app.listen(port, function() {
 /**
  * Mongo setup and config.
  */
-var mongoUri = 'mongodb://mongo-apps,mongo4-aws,mongo5-aws:27017/mb-users';
+if (app.get('env') == 'production') {
+  var mongoUri = 'mongodb://mongo-apps,mongo4-aws,mongo5-aws:27017/mb-users';
+}
+else {
+  var mongoUri = 'mongodb://localhost/mb-users';
+}
+
 mongoose.connect(mongoUri);
 mongoose.connection.on('error', function(err) {
   console.log('Unable to connect to the Mongo database (%s). Check to make sure the database is running.', mongoUri);
