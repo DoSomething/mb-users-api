@@ -1,0 +1,12 @@
+{
+  "default":
+    {
+      "port": "4733"
+    }
+  ,
+  "mongo":
+    {
+      "development" : "mongodb://localhost/mb-logging",
+      "production" : "mongodb://mongo-apps,mongo4-aws,mongo5-aws:27017/mb-logging/?replicaSet=rs1"
+    }
+}
