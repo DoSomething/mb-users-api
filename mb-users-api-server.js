@@ -1,8 +1,8 @@
 var express = require('express')
     , mongoose = require('mongoose')
     , User = require('./lib/user')
-    , UserBanned = require('./lib/userBanned')
     , Users = require('./lib/users')
+    , UserBanned = require('./lib/userBanned')
     , dslogger = require('./lib/dslogger');
 
 // Initialize the logging mechanism. Defines filename to write to and whether
