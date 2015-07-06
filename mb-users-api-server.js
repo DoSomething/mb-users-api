@@ -3,6 +3,7 @@ var express = require('express')
     , User = require('./lib/user')
     , Users = require('./lib/users')
     , UserBanned = require('./lib/userBanned')
+    , mb_config = require(__dirname + '/config/mb_config.json')
     , dslogger = require('./lib/dslogger');
 
 // Initialize the logging mechanism. Defines filename to write to and whether
@@ -51,7 +52,7 @@ app.configure(function() {
 });
 
 // Start server
-var port = overridePort || process.env.MB_USER_API_PORT || defaultPort;
+var port = overridePort || process.env.MB_USER_API_PORT || mb_config.default.port;;
 app.listen(port, function() {
   console.log('Message Broker User API server listening on port %d in %s mode.', port, app.settings.env);
 });
@@ -61,12 +62,11 @@ app.listen(port, function() {
  * Mongo setup and config.
  */
 if (app.get('env') == 'production') {
-  var mongoUri = 'mongodb://mongo-apps,mongo4-aws,mongo5-aws:27017/mb-users';
+  var mongoUri = mb_config.mongo.production;
 }
 else {
-  var mongoUri = 'mongodb://localhost/mb-users';
+  var mongoUri = mb_config.mongo.development;
 }
-
 mongoose.connect(mongoUri);
 mongoose.connection.on('error', function(err) {
   console.log('Unable to connect to the Mongo database (%s). Check to make sure the database is running.', mongoUri);
