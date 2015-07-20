@@ -2,6 +2,8 @@ var express = require('express')
     , mongoose = require('mongoose')
     , User = require('./lib/user')
     , Users = require('./lib/users')
+    , UserBanned = require('./lib/userBanned')
+    , mb_config = require(__dirname + '/config/mb_config.json')
     , dslogger = require('./lib/dslogger');
 
 // Initialize the logging mechanism. Defines filename to write to and whether
@@ -50,7 +52,7 @@ app.configure(function() {
 });
 
 // Start server
-var port = overridePort || process.env.MB_USER_API_PORT || defaultPort;
+var port = overridePort || process.env.MB_USER_API_PORT || mb_config.default.port;;
 app.listen(port, function() {
   console.log('Message Broker User API server listening on port %d in %s mode.', port, app.settings.env);
 });
@@ -59,7 +61,12 @@ app.listen(port, function() {
 /**
  * Mongo setup and config.
  */
-var mongoUri = 'mongodb://mongo-apps,mongo4-aws,mongo5-aws:27017/mb-users';
+if (app.get('env') == 'production') {
+  var mongoUri = mb_config.mongo.production;
+}
+else {
+  var mongoUri = mb_config.mongo.development;
+}
 mongoose.connect(mongoUri);
 mongoose.connection.on('error', function(err) {
   console.log('Unable to connect to the Mongo database (%s). Check to make sure the database is running.', mongoUri);
@@ -94,7 +101,11 @@ mongoose.connection.once('open', function() {
       mailchimp: Boolean,
       digest: Boolean,
       user_events: Boolean,
-      banned: Boolean
+      banned: {
+        reason: String,
+        when: Date,
+        source: String
+      }
     },
     campaigns:[{
       nid: Number,
@@ -163,6 +174,21 @@ app.post('/user', function(req, res) {
   else {
     var user = new User(userModel);
     user.post(req, res);
+  }
+});
+
+/**
+ * POST to /user/banned
+ */
+app.post('/user/banned', function(req, res) {
+
+  if (!req.body.email) {
+    res.send(400, 'No email specified.');
+    dslogger.error('POST /user/banned request. No email specified.');
+  }
+  else {
+    var userBanned = new UserBanned(userModel);
+    userBanned.post(req, res);
   }
 });
 
