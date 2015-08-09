@@ -158,8 +158,16 @@ app.get('/user', function(req, res) {
  * GET from /users
  */
 app.get('/users', function(req, res) {
-  var users = new Users(userModel);
-  users.get(req, res);
+
+  if (!req.body.type == 'realTime') {
+    var usersCursor = new UsersCursor(userModel);
+    usersCursor.get(req, res);
+  }
+  else {
+    var users = new Users(userModel);
+    users.get(req, res);
+  }
+
 });
 
 /**
