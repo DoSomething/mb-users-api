@@ -53,7 +53,7 @@ app.configure(function() {
 });
 
 // Start server
-var port = overridePort || process.env.MB_USER_API_PORT || mb_config.default.port;;
+var port = overridePort || process.env.MB_USER_API_PORT || mb_config.default.port;
 app.listen(port, function() {
   console.log('Message Broker User API server listening on port %d in %s mode.', port, app.settings.env);
 });
@@ -161,9 +161,6 @@ app.get('/user', function(req, res) {
 app.get('/users', function(req, res) {
 
   if (req.query.type == 'realTime') {
-    if (req.query.direction === undefined) {
-      response.send(400, 'The "direction" needs to be defined.');
-    }
     if (req.query.pageSize === undefined) {
       response.send(400, 'The "pageSize" needs to be defined.');
     }
