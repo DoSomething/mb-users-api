@@ -160,9 +160,9 @@ app.get('/user', function(req, res) {
  */
 app.get('/users', function(req, res) {
 
-  if (req.query.type == 'realTime') {
-    if (req.query.pageSize === undefined) {
-      response.send(400, 'The "pageSize" needs to be defined.');
+  if (req.query.type == 'cursor') {
+    if (typeof req.query.pageSize === 'undefined') {
+      res.send(400, 'The required "pageSize" parameter is not defined.');
     }
     var usersCursor = new UsersCursor(userModel);
     usersCursor.get(req, res);
