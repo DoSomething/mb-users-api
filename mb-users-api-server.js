@@ -2,6 +2,7 @@ var express = require('express')
     , mongoose = require('mongoose')
     , User = require('./lib/user')
     , Users = require('./lib/users')
+    , UsersCursor = require('./lib/usersCursor')
     , UserBanned = require('./lib/userBanned')
     , mb_config = require(__dirname + '/config/mb_config.json')
     , dslogger = require('./lib/dslogger');
@@ -52,7 +53,7 @@ app.configure(function() {
 });
 
 // Start server
-var port = overridePort || process.env.MB_USER_API_PORT || mb_config.default.port;;
+var port = overridePort || process.env.MB_USER_API_PORT || mb_config.default.port;
 app.listen(port, function() {
   console.log('Message Broker User API server listening on port %d in %s mode.', port, app.settings.env);
 });
@@ -158,8 +159,19 @@ app.get('/user', function(req, res) {
  * GET from /users
  */
 app.get('/users', function(req, res) {
-  var users = new Users(userModel);
-  users.get(req, res);
+
+  if (req.query.type == 'cursor') {
+    if (typeof req.query.pageSize === 'undefined') {
+      res.send(400, 'The required "pageSize" parameter is not defined.');
+    }
+    var usersCursor = new UsersCursor(userModel);
+    usersCursor.get(req, res);
+  }
+  else {
+    var users = new Users(userModel);
+    users.get(req, res);
+  }
+
 });
 
 /**
@@ -167,7 +179,7 @@ app.get('/users', function(req, res) {
  */
 app.post('/user', function(req, res) {
 
-  if (!req.body.email) {
+  if (typeof req.body.email === 'undefined') {
     res.send(400, 'No email specified.');
     dslogger.error('POST /user request. No email specified.');
   }
@@ -182,7 +194,7 @@ app.post('/user', function(req, res) {
  */
 app.post('/user/banned', function(req, res) {
 
-  if (!req.body.email) {
+  if (typeof req.body.email === 'undefined') {
     res.send(400, 'No email specified.');
     dslogger.error('POST /user/banned request. No email specified.');
   }
@@ -199,7 +211,7 @@ app.delete('/user', function(req, res) {
 
   console.log('DELETE /user');
 
-  if (!req.query.email) {
+  if (typeof req.body.email === 'undefined') {
     res.send(400, 'No email specified.');
     dslogger.error('DELETE /user request. No email specified.');
   }
