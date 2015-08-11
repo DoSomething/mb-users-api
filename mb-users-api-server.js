@@ -179,7 +179,7 @@ app.get('/users', function(req, res) {
  */
 app.post('/user', function(req, res) {
 
-  if (!req.body.email) {
+  if (typeof req.body.email === 'undefined') {
     res.send(400, 'No email specified.');
     dslogger.error('POST /user request. No email specified.');
   }
@@ -194,7 +194,7 @@ app.post('/user', function(req, res) {
  */
 app.post('/user/banned', function(req, res) {
 
-  if (!req.body.email) {
+  if (typeof req.body.email === 'undefined') {
     res.send(400, 'No email specified.');
     dslogger.error('POST /user/banned request. No email specified.');
   }
@@ -211,7 +211,7 @@ app.delete('/user', function(req, res) {
 
   console.log('DELETE /user');
 
-  if (!req.query.email) {
+  if (typeof req.body.email === 'undefined') {
     res.send(400, 'No email specified.');
     dslogger.error('DELETE /user request. No email specified.');
   }
