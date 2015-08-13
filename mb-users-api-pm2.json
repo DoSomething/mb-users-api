@@ -5,10 +5,10 @@
   "node_args"        : ["--harmony", " --max-stack-size=102400000"],
   "log_date_format"  : "YYYY-MM-DD HH:mm Z",
   "error_file"       : "/var/log/mb-users-api-server/mb-users-api-server.stderr.log",
-  "instances"        : 6, //or 0 => 'max'
-  "min_uptime"       : "200s", // 200 seconds, defaults to 1000
-  "max_restarts"     : 10, // defaults to 15
-  "max_memory_restart": "1M", // 1 megabytes, e.g.: "2G", "10M", "100K", 1024 the default unit is byte.
+  "instances"        : 6,
+  "min_uptime"       : "200s",
+  "max_restarts"     : 10,
+  "max_memory_restart": "1M",
   "cron_restart"     : "1 0 * * *",
   "watch"            : true,
   "ignore_watch"      : ["[\\/\\\\]\\./", "node_modules"],
@@ -16,8 +16,8 @@
   "exec_interpreter" : "node",
   "exec_mode"        : "cluster",
   "instances"        : 0,
-  "autorestart"      : true, // enable/disable automatic restart when an app crashes or exits
-  "vizion"           : false, // enable/disable vizion features (versioning control)
+  "autorestart"      : true,
+  "vizion"           : false,
   "env": {
     "NODE_ENV": "production"
   }
