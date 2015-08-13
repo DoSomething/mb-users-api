@@ -1,7 +1,7 @@
 {
   "name"             : "mb-users-api-server",
   "cwd"              : "/var/www/mb-users-api",
-  "script"           : "bin/mb-users-api-server.js",
+  "script"           : "mb-users-api-server.js",
   "node_args"        : ["--harmony", " --max-stack-size=102400000"],
   "log_date_format"  : "YYYY-MM-DD HH:mm Z",
   "error_file"       : "/var/log/mb-users-api-server/mb-users-api-server.stderr.log",
