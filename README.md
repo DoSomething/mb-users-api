@@ -35,7 +35,7 @@ $ mongod
 The API lives on the apps server in our Rackspace private cloud. We use the forever tool [https://www.npmjs.org/package/forever] to manage the API as a daemon.
 - Log in to the apps server on the privat cloud.
 - `$ cd /var/www/mb-users-api`
-- `$ forever start mb-users-api-server.js`
+- `$ NODE_ENV=production forever start mb-users-api-server.js`
 - Verify that the process is running:  
   `$ forever list`
 - If an instance of mb-users-api-server is already running, you can stop it by checking  the index of the process from `forever list` and then running:  
