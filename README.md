@@ -70,6 +70,20 @@ Parameters _(optional)_:
 ```  
 Response: `true` if successful. Otherwise, something else.
 
+##### Unsubscribe / Ban User from all messaging
+URL: `/user/banned`  
+Protocol: `HTTP POST`
+Parameters _(required)_: `email`
+Parameters _(required)_: `reason`
+Parameters _(required)_: `source`
+```
+{
+  "email": "example@dosomething.org",
+  "reason": "Administrator request",
+  "source": "Aurora"
+}
+```
+
 #### Get Users
 URL: `/users`  
 Protocol: `HTTP GET`  
