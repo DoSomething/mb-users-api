@@ -180,6 +180,7 @@ app.get('/users', function(req, res) {
 app.post('/user', function(req, res) {
 
   if (typeof req.body.email === 'undefined') {
+    console.log('/user undefined req.body.email');
     res.send(400, 'No email specified.');
     dslogger.error('POST /user request. No email specified.');
   }
