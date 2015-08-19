@@ -76,7 +76,7 @@ Protocol: `HTTP POST`
 Parameters _(required)_:
 - `email`
 - `reason`
-= `source`
+- `source`
 ```
 {
   "email": "example@dosomething.org",
