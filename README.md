@@ -73,9 +73,10 @@ Response: `true` if successful. Otherwise, something else.
 ##### Unsubscribe / Ban User from all messaging
 URL: `/user/banned`  
 Protocol: `HTTP POST`
-Parameters _(required)_: `email`
-Parameters _(required)_: `reason`
-Parameters _(required)_: `source`
+Parameters _(required)_:
+- `email`
+- `reason`
+= `source`
 ```
 {
   "email": "example@dosomething.org",
