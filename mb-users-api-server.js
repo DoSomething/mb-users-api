@@ -112,6 +112,7 @@ mongoose.connection.once('open', function() {
     },
     campaigns:[{
       nid: Number,
+      language: String,
       signup: Date,
       reportback: Date
     }],
